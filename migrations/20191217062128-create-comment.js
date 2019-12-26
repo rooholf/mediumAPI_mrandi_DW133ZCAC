@@ -1,50 +1,49 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Comments', {
+    return queryInterface.createTable('comments', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      is_published: {
-        type: Sequelize.BOOLEAN
-      },
-      is_archived: {
-        type: Sequelize.BOOLEAN
+      article_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'categories',
+          key: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
       },
       user_id: {
         type: Sequelize.INTEGER,
-        allowNull:false,
-        references:{
-          model:'Users',
-          key:'id'
+        allowNull: false,
+        references: {
+          model: 'users',
+          key: 'id'
         },
-        onUpdate:'cascade',
-        onDelete:'cascade'
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
       },
-      article_id: {
-        type: Sequelize.INTEGER,
-        allowNull:false,
-        references:{
-          model:'Articles',
-          key:'id'
-        },
-        onUpdate:'cascade',
-        onDelete:'cascade'
+      comment: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: new Date()
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: new Date()
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Comments');
+    return queryInterface.dropTable('comments');
   }
 };

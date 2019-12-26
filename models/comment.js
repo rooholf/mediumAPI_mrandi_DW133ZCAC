@@ -1,13 +1,20 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Comment = sequelize.define('Comment', {
-    is_published: DataTypes.BOOLEAN,
-    is_archived: DataTypes.BOOLEAN,
+  const comment = sequelize.define('comment', {
+    article_id: DataTypes.INTEGER,
     user_id: DataTypes.INTEGER,
-    article_id: DataTypes.INTEGER
+    comment: DataTypes.STRING
   }, {});
-  Comment.associate = function(models) {
+  comment.associate = function (models) {
     // associations can be defined here
+    comment.belongsTo(models.articles, {
+      foreignKey: 'article_id',
+      as: 'articles',
+    }),
+      comment.belongsTo(models.users, {
+        foreignKey: 'user_id',
+        as: 'users',
+      })
   };
-  return Comment;
+  return comment;
 };
